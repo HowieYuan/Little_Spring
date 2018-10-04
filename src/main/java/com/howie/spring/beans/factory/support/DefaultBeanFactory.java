@@ -1,6 +1,8 @@
 package com.howie.spring.beans.factory.support;
 
 import com.howie.spring.beans.BeanDefinition;
+import com.howie.spring.beans.exception.BeanCreationException;
+import com.howie.spring.beans.exception.BeanDefinitionStoreException;
 import com.howie.spring.util.ClassUtils;
 import com.howie.spring.beans.factory.BeanFactory;
 import org.dom4j.Document;
@@ -66,7 +68,7 @@ public class DefaultBeanFactory implements BeanFactory {
                 this.beanDefinitionMap.put(id, bd);
             }
         } catch (DocumentException e) {
-            e.printStackTrace();
+            throw new BeanDefinitionStoreException("IOException parsing XML document from " + configFile, e);
         } finally {
             if (inputStream != null) {
                 try {
@@ -88,23 +90,15 @@ public class DefaultBeanFactory implements BeanFactory {
         //GenericBeanDefinition
         BeanDefinition bd = this.getBeanDefinition(beanID);
         if (bd == null) {
-            return null;
+            throw new BeanCreationException("Bean Definition does not exist");
         }
         ClassLoader cl = ClassUtils.getDefaultClassLoader();
         String beanClassName = bd.getBeanClassName();
         try {
             Class<?> clz = cl.loadClass(beanClassName);
             return clz.newInstance();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new BeanCreationException("create bean for " + beanClassName + " failed", e);
         }
-
-        return null;
     }
 }

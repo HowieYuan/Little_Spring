@@ -1,6 +1,8 @@
 package com.howie.spring.test;
 
 import com.howie.spring.beans.BeanDefinition;
+import com.howie.spring.beans.exception.BeanCreationException;
+import com.howie.spring.beans.exception.BeanDefinitionStoreException;
 import com.howie.spring.beans.factory.BeanFactory;
 import com.howie.spring.beans.factory.support.DefaultBeanFactory;
 import com.howie.spring.sevice.PetStoreService;
@@ -16,7 +18,6 @@ import org.junit.Test;
  * @Time 17:28
  */
 public class BeanFactoryTest {
-
     @Test
     public void testGetBean() {
         BeanFactory beanFactory = new DefaultBeanFactory("bean.xml");
@@ -26,7 +27,26 @@ public class BeanFactoryTest {
 
         PetStoreService petStoreService = (PetStoreService) beanFactory.getBean("petStore");
         Assert.assertNotNull(petStoreService);
-        Object o = beanFactory.getBean("invalidBean");
-        Assert.assertNotNull(o);
+    }
+
+    @Test
+    public void testInvalidBean() {
+        BeanFactory beanFactory = new DefaultBeanFactory("bean.xml");
+        try {
+            beanFactory.getBean("invalidBean");
+        } catch (BeanCreationException e) {
+            return;
+        }
+        Assert.fail("未抛出BeanCreationException");
+    }
+
+    @Test
+    public void testInvalidXML() {
+        try {
+            new DefaultBeanFactory("xxx.xml");
+        } catch (BeanDefinitionStoreException e) {
+            return;
+        }
+        Assert.fail("未抛出BeanDefinitionStoreException");
     }
 }
