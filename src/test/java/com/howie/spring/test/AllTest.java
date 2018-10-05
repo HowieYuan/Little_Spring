@@ -1,5 +1,6 @@
 package com.howie.spring.test;
 
+import com.howie.spring.core.io.Resourse;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -14,7 +15,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         BeanFactoryTest.class,
-        ApplicationContextTest.class
+        ApplicationContextTest.class,
+        ResourseTest.class
 })
 public class AllTest {
 }
