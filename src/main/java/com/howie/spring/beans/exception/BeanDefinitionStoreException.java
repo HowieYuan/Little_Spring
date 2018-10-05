@@ -8,7 +8,7 @@ package com.howie.spring.beans.exception;
  * @Date 2018-10-04
  * @Time 20:36
  */
-public class BeanDefinitionStoreException extends RuntimeException {
+public class BeanDefinitionStoreException extends BeanException {
     public BeanDefinitionStoreException(String message, Throwable cause) {
         super(message, cause);
     }

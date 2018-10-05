@@ -3,10 +3,11 @@ package com.howie.spring.test;
 import com.howie.spring.beans.BeanDefinition;
 import com.howie.spring.beans.exception.BeanCreationException;
 import com.howie.spring.beans.exception.BeanDefinitionStoreException;
-import com.howie.spring.beans.factory.BeanFactory;
 import com.howie.spring.beans.factory.support.DefaultBeanFactory;
+import com.howie.spring.beans.factory.xml.XMLBeanDefinitionReader;
 import com.howie.spring.sevice.PetStoreService;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -18,9 +19,21 @@ import org.junit.Test;
  * @Time 17:28
  */
 public class BeanFactoryTest {
+    DefaultBeanFactory beanFactory = null;
+    XMLBeanDefinitionReader reader = null;
+
+    /**
+     * 每开始一个测试用例都重新加载一次 DefaultBeanFactory 和 XMLBeanDefinitionReader
+     */
+    @Before
+    public void setUp() {
+        beanFactory = new DefaultBeanFactory();
+        reader = new XMLBeanDefinitionReader(beanFactory);
+    }
+
     @Test
     public void testGetBean() {
-        BeanFactory beanFactory = new DefaultBeanFactory("bean.xml");
+        reader.loadBeanDefinition("bean.xml");
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition("petStore");
         Assert.assertEquals("com.howie.spring.sevice.PetStoreService",
                 beanDefinition.getBeanClassName());
@@ -31,7 +44,7 @@ public class BeanFactoryTest {
 
     @Test
     public void testInvalidBean() {
-        BeanFactory beanFactory = new DefaultBeanFactory("bean.xml");
+        reader.loadBeanDefinition("bean.xml");
         try {
             beanFactory.getBean("invalidBean");
         } catch (BeanCreationException e) {
@@ -43,7 +56,7 @@ public class BeanFactoryTest {
     @Test
     public void testInvalidXML() {
         try {
-            new DefaultBeanFactory("xxx.xml");
+            reader.loadBeanDefinition("xxx.xml");
         } catch (BeanDefinitionStoreException e) {
             return;
         }
