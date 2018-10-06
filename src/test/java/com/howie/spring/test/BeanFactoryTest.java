@@ -21,8 +21,8 @@ import org.junit.Test;
  * @Time 17:28
  */
 public class BeanFactoryTest {
-    DefaultBeanFactory beanFactory = null;
-    XMLBeanDefinitionReader reader = null;
+    private DefaultBeanFactory beanFactory = null;
+    private XMLBeanDefinitionReader reader = null;
 
     /**
      * 每开始一个测试用例都重新加载一次 DefaultBeanFactory 和 XMLBeanDefinitionReader
@@ -58,7 +58,7 @@ public class BeanFactoryTest {
     @Test
     public void testInvalidXML() {
         try {
-            reader.loadBeanDefinition(new ClassPathResource("bean.xml"));
+            reader.loadBeanDefinition(new ClassPathResource("xxx.xml"));
         } catch (BeanDefinitionStoreException e) {
             return;
         }

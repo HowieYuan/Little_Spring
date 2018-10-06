@@ -1,14 +1,11 @@
 package com.howie.spring.context.support;
 
-import com.howie.spring.beans.BeanDefinition;
-import com.howie.spring.beans.factory.BeanFactory;
-import com.howie.spring.beans.factory.support.BeanDefinitionRegistry;
 import com.howie.spring.beans.factory.support.DefaultBeanFactory;
 import com.howie.spring.beans.factory.xml.XMLBeanDefinitionReader;
 import com.howie.spring.context.ApplicationContext;
 import com.howie.spring.core.io.ClassPathResource;
 import com.howie.spring.core.io.Resource;
-
+import com.howie.spring.util.ClassUtils;
 
 /**
  * Created with IntelliJ IDEA
@@ -16,20 +13,34 @@ import com.howie.spring.core.io.Resource;
  * @Author yuanhaoyue swithaoy@gmail.com
  * @Description
  * @Date 2018-10-06
- * @Time 0:59
+ * @Time 14:41
  */
-public class ClassPathApplicationContext implements ApplicationContext {
+public abstract class AbstractApplicationContext implements ApplicationContext {
     private DefaultBeanFactory beanFactory = null;
+    private ClassLoader classLoader = null;
 
-    public ClassPathApplicationContext(String configFile) {
+    public AbstractApplicationContext(String configFile) {
         beanFactory = new DefaultBeanFactory();
         XMLBeanDefinitionReader reader = new XMLBeanDefinitionReader(beanFactory);
-        Resource resource = new ClassPathResource(configFile);
+        Resource resource = this.getResource(configFile);
         reader.loadBeanDefinition(resource);
+        beanFactory.setBeanClassLoader(this.getBeanClassLoader());
     }
 
     @Override
     public Object getBean(String beanID) {
         return beanFactory.getBean(beanID);
+    }
+
+    abstract public Resource getResource(String configFile);
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+
+    @Override
+    public ClassLoader getBeanClassLoader() {
+        return this.classLoader == null ? ClassUtils.getDefaultClassLoader() : classLoader;
     }
 }

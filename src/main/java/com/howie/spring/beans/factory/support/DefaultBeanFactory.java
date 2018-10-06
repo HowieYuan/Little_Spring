@@ -2,6 +2,7 @@ package com.howie.spring.beans.factory.support;
 
 import com.howie.spring.beans.BeanDefinition;
 import com.howie.spring.beans.exception.BeanCreationException;
+import com.howie.spring.beans.factory.config.ConfigurableBeanFactory;
 import com.howie.spring.util.ClassUtils;
 import com.howie.spring.beans.factory.BeanFactory;
 
@@ -16,11 +17,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date 2018-10-04
  * @Time 17:30
  */
-public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory implements ConfigurableBeanFactory, BeanDefinitionRegistry {
     /**
      * xml 文件中各个 <bean>
      */
     private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>(64);
+
+    private ClassLoader classLoader = null;
 
     /**
      * 获得某个 bean 的 BeanDefinition
@@ -49,7 +52,7 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
         if (bd == null) {
             throw new BeanCreationException("Bean Definition does not exist");
         }
-        ClassLoader cl = ClassUtils.getDefaultClassLoader();
+        ClassLoader cl = this.getBeanClassLoader();
         String beanClassName = bd.getBeanClassName();
         try {
             Class<?> clz = cl.loadClass(beanClassName);
@@ -57,5 +60,15 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
         } catch (Exception e) {
             throw new BeanCreationException("create bean for " + beanClassName + " failed", e);
         }
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+
+    @Override
+    public ClassLoader getBeanClassLoader() {
+        return this.classLoader == null ? ClassUtils.getDefaultClassLoader() : classLoader;
     }
 }

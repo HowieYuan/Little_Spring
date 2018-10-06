@@ -15,18 +15,14 @@ import com.howie.spring.core.io.Resource;
  * @Date 2018-10-06
  * @Time 14:04
  */
-public class FileSystemApplicationContext implements ApplicationContext {
-    private DefaultBeanFactory beanFactory = null;
+public class FileSystemXMLApplicationContext extends AbstractApplicationContext {
 
-    public FileSystemApplicationContext(String configFile) {
-        beanFactory = new DefaultBeanFactory();
-        XMLBeanDefinitionReader reader = new XMLBeanDefinitionReader(beanFactory);
-        Resource resource = new FileSystemResource(configFile);
-        reader.loadBeanDefinition(resource);
+    public FileSystemXMLApplicationContext(String configFile) {
+        super(configFile);
     }
 
     @Override
-    public Object getBean(String beanID) {
-        return beanFactory.getBean(beanID);
+    public Resource getResource(String configFile) {
+        return new FileSystemResource(configFile);
     }
 }
