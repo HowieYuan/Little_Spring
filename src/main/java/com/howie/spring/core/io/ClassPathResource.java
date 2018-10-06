@@ -14,7 +14,7 @@ import java.io.InputStream;
  * @Date 2018-10-06
  * @Time 1:34
  */
-public class ClassPathResource implements Resourse {
+public class ClassPathResource implements Resource {
     private String classPath;
     private ClassLoader classLoader;
 

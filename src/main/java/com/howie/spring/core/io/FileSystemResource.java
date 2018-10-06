@@ -15,7 +15,7 @@ import java.io.InputStream;
  * @Date 2018-10-06
  * @Time 1:52
  */
-public class FileSystemResource implements Resourse {
+public class FileSystemResource implements Resource {
     private final String path;
     private final File file;
 

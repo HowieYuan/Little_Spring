@@ -5,6 +5,8 @@ import com.howie.spring.beans.exception.BeanCreationException;
 import com.howie.spring.beans.exception.BeanDefinitionStoreException;
 import com.howie.spring.beans.factory.support.DefaultBeanFactory;
 import com.howie.spring.beans.factory.xml.XMLBeanDefinitionReader;
+import com.howie.spring.core.io.ClassPathResource;
+import com.howie.spring.core.io.Resource;
 import com.howie.spring.sevice.PetStoreService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,7 +35,7 @@ public class BeanFactoryTest {
 
     @Test
     public void testGetBean() {
-        reader.loadBeanDefinition("bean.xml");
+        reader.loadBeanDefinition(new ClassPathResource("bean.xml"));
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition("petStore");
         Assert.assertEquals("com.howie.spring.sevice.PetStoreService",
                 beanDefinition.getBeanClassName());
@@ -44,7 +46,7 @@ public class BeanFactoryTest {
 
     @Test
     public void testInvalidBean() {
-        reader.loadBeanDefinition("bean.xml");
+        reader.loadBeanDefinition(new ClassPathResource("bean.xml"));
         try {
             beanFactory.getBean("invalidBean");
         } catch (BeanCreationException e) {
@@ -56,7 +58,7 @@ public class BeanFactoryTest {
     @Test
     public void testInvalidXML() {
         try {
-            reader.loadBeanDefinition("xxx.xml");
+            reader.loadBeanDefinition(new ClassPathResource("bean.xml"));
         } catch (BeanDefinitionStoreException e) {
             return;
         }

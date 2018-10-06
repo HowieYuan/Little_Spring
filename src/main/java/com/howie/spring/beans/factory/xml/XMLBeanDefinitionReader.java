@@ -4,6 +4,7 @@ import com.howie.spring.beans.BeanDefinition;
 import com.howie.spring.beans.exception.BeanDefinitionStoreException;
 import com.howie.spring.beans.factory.support.BeanDefinitionRegistry;
 import com.howie.spring.beans.factory.support.GenericBeanDefinition;
+import com.howie.spring.core.io.Resource;
 import com.howie.spring.util.ClassUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -35,17 +36,11 @@ public class XMLBeanDefinitionReader {
 
     /**
      * 加载 BeanDefinition, 解析 xml 将 <bean> 数据保存入 beanDefinitionMap
-     *
-     * @param configFile xml 配置文件
      */
-    public void loadBeanDefinition(String configFile) {
+    public void loadBeanDefinition(Resource resource) {
         InputStream inputStream = null;
         try {
-            //获得类加载器
-            ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
-            //利用类加载器解析文件获得 InputStream
-            inputStream = classLoader.getResourceAsStream(configFile);
-
+            inputStream = resource.getInputStream();
             SAXReader reader = new SAXReader();
             Document document = reader.read(inputStream);
             //解析 <beans> 标签
@@ -59,8 +54,8 @@ public class XMLBeanDefinitionReader {
                 BeanDefinition bd = new GenericBeanDefinition(id, beanClassName);
                 beanDefinitionRegistry.registryBeanDefinition(id, bd);
             }
-        } catch (DocumentException e) {
-            throw new BeanDefinitionStoreException("IOException parsing XML document from " + configFile, e);
+        } catch (Exception e) {
+            throw new BeanDefinitionStoreException("IOException parsing XML document from " + resource.getDescription(), e);
         } finally {
             if (inputStream != null) {
                 try {

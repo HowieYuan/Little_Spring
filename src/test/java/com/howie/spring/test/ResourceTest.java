@@ -2,15 +2,11 @@ package com.howie.spring.test;
 
 import com.howie.spring.core.io.ClassPathResource;
 import com.howie.spring.core.io.FileSystemResource;
-import com.howie.spring.core.io.Resourse;
+import com.howie.spring.core.io.Resource;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -20,10 +16,10 @@ import java.util.List;
  * @Date 2018-10-06
  * @Time 1:41
  */
-public class ResourseTest {
+public class ResourceTest {
     @Test
     public void ClassPathResourceTest() throws Exception {
-        Resourse resource = new ClassPathResource("bean.xml");
+        Resource resource = new ClassPathResource("bean.xml");
         InputStream inputStream = null;
         try {
             inputStream = resource.getInputStream();
@@ -37,7 +33,7 @@ public class ResourseTest {
 
     @Test
     public void FileSystemResourceTest() throws Exception {
-        Resourse resource = new FileSystemResource("D:\\学习\\myproject\\MySpring\\src\\main\\resources\\bean.xml");
+        Resource resource = new FileSystemResource("D:\\学习\\myproject\\MySpring\\src\\main\\resources\\bean.xml");
         InputStream inputStream = null;
         try {
             inputStream = resource.getInputStream();

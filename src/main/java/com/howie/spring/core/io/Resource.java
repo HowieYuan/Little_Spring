@@ -11,7 +11,7 @@ import java.io.InputStream;
  * @Date 2018-10-06
  * @Time 1:28
  */
-public interface Resourse {
+public interface Resource {
     InputStream getInputStream() throws IOException;
 
     String getDescription();
