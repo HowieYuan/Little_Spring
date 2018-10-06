@@ -33,7 +33,7 @@ public class ResourceTest {
 
     @Test
     public void FileSystemResourceTest() throws Exception {
-        Resource resource = new FileSystemResource("D:\\学习\\myproject\\MySpring\\src\\main\\resources\\bean.xml");
+        Resource resource = new FileSystemResource("src\\main\\resources\\bean.xml");
         InputStream inputStream = null;
         try {
             inputStream = resource.getInputStream();

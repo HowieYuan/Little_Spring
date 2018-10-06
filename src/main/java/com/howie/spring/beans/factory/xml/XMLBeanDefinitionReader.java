@@ -28,6 +28,8 @@ public class XMLBeanDefinitionReader {
 
     public static final String CLASS_ATTRIBUTE = "class";
 
+    public static final String SCOPE_ATTRIBUTE = "scope";
+
     private BeanDefinitionRegistry beanDefinitionRegistry;
 
     public XMLBeanDefinitionReader(BeanDefinitionRegistry beanDefinitionRegistry) {
@@ -47,11 +49,18 @@ public class XMLBeanDefinitionReader {
             Element root = document.getRootElement();
             Iterator<Element> iterator = root.elementIterator();
             while (iterator.hasNext()) {
-                //解析获得 <bean>，并解析里面的变量
+                //解析获得 <bean>，并解析里面的属性
                 Element element = iterator.next();
+                //解析 id 属性
                 String id = element.attributeValue(ID_ATTRIBUTE);
+                //解析 class 属性
                 String beanClassName = element.attributeValue(CLASS_ATTRIBUTE);
                 BeanDefinition bd = new GenericBeanDefinition(id, beanClassName);
+                //解析 scope 属性
+                if (element.attribute(SCOPE_ATTRIBUTE) != null) {
+                    bd.setScope(element.attributeValue(SCOPE_ATTRIBUTE));
+                }
+                //使用 BeanDefinitionRegistry 的方法把 bean 注册入 Map 中
                 beanDefinitionRegistry.registryBeanDefinition(id, bd);
             }
         } catch (Exception e) {

@@ -11,7 +11,7 @@ import com.howie.spring.util.ClassUtils;
  * Created with IntelliJ IDEA
  *
  * @Author yuanhaoyue swithaoy@gmail.com
- * @Description
+ * @Description 模版方法设计模式，将不同类型的 Resource 固定在一个模版方法中
  * @Date 2018-10-06
  * @Time 14:41
  */
@@ -22,6 +22,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     public AbstractApplicationContext(String configFile) {
         beanFactory = new DefaultBeanFactory();
         XMLBeanDefinitionReader reader = new XMLBeanDefinitionReader(beanFactory);
+        //getResource 获得不同类型的 Resource
         Resource resource = this.getResource(configFile);
         reader.loadBeanDefinition(resource);
         beanFactory.setBeanClassLoader(this.getBeanClassLoader());

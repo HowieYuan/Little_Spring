@@ -8,6 +8,7 @@ import com.howie.spring.beans.factory.xml.XMLBeanDefinitionReader;
 import com.howie.spring.core.io.ClassPathResource;
 import com.howie.spring.core.io.Resource;
 import com.howie.spring.sevice.PetStoreService;
+import com.howie.spring.sevice.SupermarketService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,11 +38,12 @@ public class BeanFactoryTest {
     public void testGetBean() {
         reader.loadBeanDefinition(new ClassPathResource("bean.xml"));
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition("petStore");
+        PetStoreService petStore1 = (PetStoreService) beanFactory.getBean("petStore");
+
         Assert.assertEquals("com.howie.spring.sevice.PetStoreService",
                 beanDefinition.getBeanClassName());
 
-        PetStoreService petStoreService = (PetStoreService) beanFactory.getBean("petStore");
-        Assert.assertNotNull(petStoreService);
+        Assert.assertNotNull(petStore1);
     }
 
     @Test
@@ -63,5 +65,27 @@ public class BeanFactoryTest {
             return;
         }
         Assert.fail("未抛出BeanDefinitionStoreException");
+    }
+
+    @Test
+    public void testSingletonBean() {
+        reader.loadBeanDefinition(new ClassPathResource("bean.xml"));
+        BeanDefinition beanDefinition = beanFactory.getBeanDefinition("petStore");
+
+        //测试是否标记为单例属性
+        Assert.assertTrue(beanDefinition.isSingleton());
+        Assert.assertFalse(beanDefinition.isPrototype());
+        Assert.assertEquals(beanDefinition.getScope(), BeanDefinition.SCOPE_DEFAULT);
+
+        //测试两次获取的对象是否为同一对象（单例）
+        PetStoreService petStore1 = (PetStoreService) beanFactory.getBean(null);
+        PetStoreService petStore2 = (PetStoreService) beanFactory.getBean("petStore");
+        Assert.assertEquals(petStore1, petStore2);
+        Assert.assertTrue(petStore1.equals(petStore2));
+
+        //测试两次获取的对象是否为不同对象（非单例）
+        SupermarketService supermarket1 = (SupermarketService) beanFactory.getBean("supermarket");
+        SupermarketService supermarket2 = (SupermarketService) beanFactory.getBean("supermarket");
+        Assert.assertNotEquals(supermarket1, supermarket2);
     }
 }

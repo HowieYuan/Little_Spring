@@ -8,7 +8,7 @@ import com.howie.spring.core.io.Resource;
  * Created with IntelliJ IDEA
  *
  * @Author yuanhaoyue swithaoy@gmail.com
- * @Description
+ * @Description ApplicationContext 的实现：处理 ClassPath 的 XML
  * @Date 2018-10-06
  * @Time 0:59
  */

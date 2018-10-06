@@ -4,11 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="petStore"
-          class="com.howie.spring.sevice.PetStoreService" >
-    </bean>
+    <bean id="petStore" class="com.howie.spring.sevice.PetStoreService" />
 
-    <bean id="invalidBean"
-          class="xxx.xxxxx" >
-    </bean>
+    <bean id="supermarket" class="com.howie.spring.sevice.SupermarketService" scope="prototype" />
+
+    <bean id="invalidBean" class="xxx.xxxxx" />
 </beans>

@@ -17,7 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date 2018-10-04
  * @Time 17:30
  */
-public class DefaultBeanFactory implements ConfigurableBeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
+        implements ConfigurableBeanFactory, BeanDefinitionRegistry {
     /**
      * xml 文件中各个 <bean>
      */
@@ -52,15 +53,29 @@ public class DefaultBeanFactory implements ConfigurableBeanFactory, BeanDefiniti
         if (bd == null) {
             throw new BeanCreationException("Bean Definition does not exist");
         }
+        if (bd.isSingleton()) {
+            Object bean = this.getSingletonBean(beanID);
+            if (bean != null) {
+                return bean;
+            }
+            bean = this.createBean(bd);
+            this.registerSingleton(beanID, bean);
+            return bean;
+        }
+        return this.createBean(bd);
+    }
+
+    private Object createBean(BeanDefinition bd) {
         ClassLoader cl = this.getBeanClassLoader();
         String beanClassName = bd.getBeanClassName();
         try {
             Class<?> clz = cl.loadClass(beanClassName);
             return clz.newInstance();
         } catch (Exception e) {
-            throw new BeanCreationException("create bean for " + beanClassName + " failed", e);
+            throw new BeanCreationException("create bean for "+ beanClassName +" failed",e);
         }
     }
+
 
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
