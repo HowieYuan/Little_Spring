@@ -1,4 +1,4 @@
-package com.howie.spring.test;
+package com.howie.springTest.test;
 
 import com.howie.spring.beans.BeanDefinition;
 import com.howie.spring.beans.exception.BeanCreationException;
@@ -6,9 +6,8 @@ import com.howie.spring.beans.exception.BeanDefinitionStoreException;
 import com.howie.spring.beans.factory.support.DefaultBeanFactory;
 import com.howie.spring.beans.factory.xml.XMLBeanDefinitionReader;
 import com.howie.spring.core.io.ClassPathResource;
-import com.howie.spring.core.io.Resource;
-import com.howie.spring.sevice.PetStoreService;
-import com.howie.spring.sevice.SupermarketService;
+import com.howie.springTest.sevice.PetStoreService;
+import com.howie.springTest.sevice.SupermarketService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +39,7 @@ public class BeanFactoryTest {
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition("petStore");
         PetStoreService petStore1 = (PetStoreService) beanFactory.getBean("petStore");
 
-        Assert.assertEquals("com.howie.spring.sevice.PetStoreService",
+        Assert.assertEquals("com.howie.springTest.sevice.PetStoreService",
                 beanDefinition.getBeanClassName());
 
         Assert.assertNotNull(petStore1);
@@ -78,7 +77,7 @@ public class BeanFactoryTest {
         Assert.assertEquals(beanDefinition.getScope(), BeanDefinition.SCOPE_DEFAULT);
 
         //测试两次获取的对象是否为同一对象（单例）
-        PetStoreService petStore1 = (PetStoreService) beanFactory.getBean(null);
+        PetStoreService petStore1 = (PetStoreService) beanFactory.getBean("petStore");
         PetStoreService petStore2 = (PetStoreService) beanFactory.getBean("petStore");
         Assert.assertEquals(petStore1, petStore2);
         Assert.assertTrue(petStore1.equals(petStore2));

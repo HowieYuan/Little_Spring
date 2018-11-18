@@ -1,4 +1,4 @@
-package com.howie.spring.sevice;
+package com.howie.springTest.sevice;
 
 /**
  * Created with IntelliJ IDEA

@@ -1,6 +1,10 @@
 package com.howie.spring.beans.factory.support;
 
 import com.howie.spring.beans.BeanDefinition;
+import com.howie.spring.beans.PropertyValue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -17,6 +21,8 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     private boolean singleton = true;
     private boolean prototype = false;
+
+    private List<PropertyValue> propertyValueList = new ArrayList<>();
 
     public GenericBeanDefinition(String id, String beanClassName) {
         this.id = id;
@@ -48,6 +54,11 @@ public class GenericBeanDefinition implements BeanDefinition {
     @Override
     public String getBeanClassName() {
         return this.beanClassName;
+    }
+
+    @Override
+    public List<PropertyValue> getPropertyValues() {
+        return this.propertyValueList;
     }
 
 }

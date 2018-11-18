@@ -1,4 +1,4 @@
-package com.howie.spring.test;
+package com.howie.springTest.test;
 
 import com.howie.spring.core.io.ClassPathResource;
 import com.howie.spring.core.io.FileSystemResource;
@@ -33,7 +33,7 @@ public class ResourceTest {
 
     @Test
     public void FileSystemResourceTest() throws Exception {
-        Resource resource = new FileSystemResource("src\\main\\resources\\bean.xml");
+        Resource resource = new FileSystemResource("src\\test\\resources\\bean.xml");
         InputStream inputStream = null;
         try {
             inputStream = resource.getInputStream();

@@ -1,4 +1,4 @@
-package com.howie.spring.test;
+package com.howie.springTest.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -15,7 +15,10 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         BeanFactoryTest.class,
         ApplicationContextTest.class,
-        ResourceTest.class
+        ResourceTest.class,
+        PropertyValueTest.class,
+        TypeConverterTest.class,
+        CustomNumberEditorTest.class
 })
 public class AllTest {
 }
