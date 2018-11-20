@@ -9,11 +9,25 @@ package com.howie.spring.beans.exception;
  * @Time 20:35
  */
 public class BeanCreationException extends BeanException {
-    public BeanCreationException(String message, Throwable cause) {
-        super(message, cause);
+    private String beanName;
+    public BeanCreationException(String msg) {
+        super(msg);
+
+    }
+    public BeanCreationException(String msg, Throwable cause) {
+        super(msg, cause);
     }
 
-    public BeanCreationException(String message) {
-        super(message);
+    public BeanCreationException(String beanName, String msg) {
+        super("Error creating bean with name '" + beanName + "': " + msg);
+        this.beanName = beanName;
+    }
+
+    public BeanCreationException(String beanName, String msg, Throwable cause) {
+        this(beanName, msg);
+        initCause(cause);
+    }
+    public String getBeanName(){
+        return this.beanName;
     }
 }

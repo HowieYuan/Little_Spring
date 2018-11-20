@@ -1,6 +1,7 @@
 package com.howie.spring.beans.factory.support;
 
 import com.howie.spring.beans.BeanDefinition;
+import com.howie.spring.beans.ConstructorArgument;
 import com.howie.spring.beans.PropertyValue;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class GenericBeanDefinition implements BeanDefinition {
     private boolean prototype = false;
 
     private List<PropertyValue> propertyValueList = new ArrayList<>();
+
+    private ConstructorArgument constructorArgument = new ConstructorArgument();
 
     public GenericBeanDefinition(String id, String beanClassName) {
         this.id = id;
@@ -59,6 +62,21 @@ public class GenericBeanDefinition implements BeanDefinition {
     @Override
     public List<PropertyValue> getPropertyValues() {
         return this.propertyValueList;
+    }
+
+    @Override
+    public ConstructorArgument getConstructorArgument() {
+        return this.constructorArgument;
+    }
+
+    @Override
+    public String getID() {
+        return this.id;
+    }
+
+    @Override
+    public boolean hasConstructorArgumentValues() {
+        return !constructorArgument.isEmpty();
     }
 
 }

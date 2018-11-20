@@ -1,5 +1,12 @@
 package com.howie.springTest.test;
 
+import com.howie.springTest.test.beanFactory.ApplicationContextTest;
+import com.howie.springTest.test.beanFactory.BeanFactoryTest;
+import com.howie.springTest.test.beanFactory.ResourceTest;
+import com.howie.springTest.test.injection.*;
+import com.howie.springTest.test.injection.constructor.ConstructorArgumentTest;
+import com.howie.springTest.test.injection.constructor.ConstructorResolverTest;
+import com.howie.springTest.test.injection.property.PropertyValueTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -18,7 +25,9 @@ import org.junit.runners.Suite;
         ResourceTest.class,
         PropertyValueTest.class,
         TypeConverterTest.class,
-        CustomNumberEditorTest.class
+        CustomNumberEditorTest.class,
+        ConstructorResolverTest.class,
+        ConstructorArgumentTest.class
 })
 public class AllTest {
 }

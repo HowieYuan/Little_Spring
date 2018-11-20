@@ -1,4 +1,4 @@
-package com.howie.springTest.test;
+package com.howie.springTest.test.beanFactory;
 
 import com.howie.spring.core.io.ClassPathResource;
 import com.howie.spring.core.io.FileSystemResource;

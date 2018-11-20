@@ -1,4 +1,4 @@
-package com.howie.springTest.test;
+package com.howie.springTest.test.injection;
 
 import com.howie.spring.beans.propertyeditors.CustomNumberEditor;
 import org.junit.Assert;

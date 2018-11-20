@@ -1,6 +1,7 @@
 package com.howie.spring.beans.factory.xml;
 
 import com.howie.spring.beans.BeanDefinition;
+import com.howie.spring.beans.ConstructorArgument;
 import com.howie.spring.beans.PropertyValue;
 import com.howie.spring.beans.exception.BeanDefinitionStoreException;
 import com.howie.spring.beans.factory.config.RuntimeBeanReference;
@@ -42,6 +43,10 @@ public class XMLBeanDefinitionReader {
 
     public static final String NAME_ATTRIBUTE = "name";
 
+    public static final String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
+
+    public static final String TYPE_ATTRIBUTE = "type";
+
     private BeanDefinitionRegistry beanDefinitionRegistry;
 
     protected final Log logger = LogFactory.getLog(getClass());
@@ -75,6 +80,7 @@ public class XMLBeanDefinitionReader {
                     bd.setScope(element.attributeValue(SCOPE_ATTRIBUTE));
                 }
                 parsePropertyElement(element, bd);
+                parseConstructorArgElements(element, bd);
                 //使用 BeanDefinitionRegistry 的方法把 bean 注册入 Map 中
                 beanDefinitionRegistry.registryBeanDefinition(id, bd);
             }
@@ -104,7 +110,7 @@ public class XMLBeanDefinitionReader {
                 logger.fatal("Tag 'property' must have a 'name' attribute");
                 return;
             }
-            Object value = parsePropertyValue(propertyElement, definition, propertyName);
+            Object value = parsePropertyValue(propertyElement, propertyName);
             PropertyValue propertyValue = new PropertyValue(propertyName, value);
 
             definition.getPropertyValues().add(propertyValue);
@@ -112,10 +118,9 @@ public class XMLBeanDefinitionReader {
     }
 
     /**
-     * 解析property元素的value属性
+     * 解析value属性：ref 或 value，形成 RuntimeBeanReference 或 TypedStringValue
      */
-    private Object parsePropertyValue(Element propertyElement, BeanDefinition definition,
-                                      String propertyName) {
+    private Object parsePropertyValue(Element propertyElement, String propertyName) {
         String elementName = (propertyName != null) ?
                 "<property> element for property '" + propertyName + "'" :
                 "<constructor-arg> element";
@@ -136,5 +141,37 @@ public class XMLBeanDefinitionReader {
         } else {
             throw new RuntimeException(elementName + " must specify a ref or value");
         }
+    }
+
+    /**
+     * 解析constructor-arg元素
+     */
+    public void parseConstructorArgElements(Element element, BeanDefinition bd) {
+        //找出里面所有的constructor-arg
+        Iterator iter = element.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
+        //遍历解析
+        while(iter.hasNext()){
+            Element ele = (Element)iter.next();
+            parseConstructorArgElement(ele, bd);
+        }
+
+    }
+
+    /**
+     * 解析constructor-arg里面的ref或value值
+     */
+    public void parseConstructorArgElement(Element element, BeanDefinition bd) {
+        String typeAttr = element.attributeValue(TYPE_ATTRIBUTE);
+        String nameAttr = element.attributeValue(NAME_ATTRIBUTE);
+        //复用parsePropertyValue方法，解析ref或value，形成 RuntimeBeanReference 或 TypedStringValue
+        Object value = parsePropertyValue(element, null);
+        ConstructorArgument.ValueHolder valueHolder = new ConstructorArgument.ValueHolder(value);
+        if (StringUtils.hasLength(typeAttr)) {
+            valueHolder.setType(typeAttr);
+        }
+        if (StringUtils.hasLength(nameAttr)) {
+            valueHolder.setName(nameAttr);
+        }
+        bd.getConstructorArgument().addArgumentValue(valueHolder);
     }
 }

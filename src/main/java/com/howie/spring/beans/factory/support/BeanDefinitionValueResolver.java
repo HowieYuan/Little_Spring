@@ -15,7 +15,7 @@ import com.howie.spring.beans.factory.config.TypedStringValue;
 public class BeanDefinitionValueResolver {
     private BeanFactory beanFactory;
 
-    public BeanDefinitionValueResolver(DefaultBeanFactory beanFactory) {
+    public BeanDefinitionValueResolver(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 

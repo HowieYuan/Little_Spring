@@ -1,4 +1,4 @@
-package com.howie.springTest.test;
+package com.howie.springTest.test.injection.property;
 
 import com.howie.spring.beans.BeanDefinition;
 import com.howie.spring.beans.PropertyValue;
